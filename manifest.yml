@@ -1,4 +1,0 @@
-  applications:
-  - name: DinnerBot
-    random-route: true
-    memory: 128M
