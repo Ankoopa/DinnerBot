@@ -4,4 +4,4 @@ A Discord bot for PUBG players who keep sending their Chicken Dinners. Sends a r
 
 I'm completely new to programming, so I believe my code is inefficient.
 
-version: 0.01
+version: 0.1
