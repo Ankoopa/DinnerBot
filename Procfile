@@ -1,1 +1,1 @@
-web: python DinnerBot.py
+worker: python DinnerBot.py
