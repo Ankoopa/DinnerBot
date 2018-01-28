@@ -1,10 +1,10 @@
-# These are the dependencies.
 import discord
 import json
 from discord.ext.commands import Bot
 import http.client, urllib.request, urllib.parse, urllib.error
 import search_google.api
 import random
+import time
 
 client = Bot(command_prefix="wtr-", pm_help = False)
 subscription_key = '210e9b869f7249939d6c1cfc731f851d'
@@ -12,6 +12,9 @@ uri_base = 'westcentralus.api.cognitive.microsoft.com'
 
 @client.event
 async def on_ready():
+    print ("Dinner Bot updated!")
+    await client.change_presence(game=discord.Game(name='Updating...'))
+    time.sleep(3)
     print ("Dinner Bot v0.1, ready to serve!")
     return await client.change_presence(game=discord.Game(name='Cooking Chicken'))
 
@@ -25,6 +28,7 @@ async def on_message(message):
                 img_get = {'url': img_url}
                 img_get2 = json.dumps(img_get)
                 print (img_get2)
+
                 headers = {
                     'Content-Type': 'application/json',
                     'Ocp-Apim-Subscription-Key': subscription_key,
@@ -46,9 +50,16 @@ async def on_message(message):
 
                 img_txtinfo = str(parsed['regions'])
                 print (img_txtinfo)
-                if img_txtinfo.count("WINNER") == 2 and 'CHICKEN' in img_txtinfo and 'DINNER' in img_txtinfo:
-                    #await client.send_message(message.channel, "Congratulations, "+message.author.mention+"! Here's your chicken dinner: *insert pic*")
-                    chicken_food = ['roasted chicken', 'fried chicken', 'chicken wings']
+                win_txt = ['WINNER', 'CHICKEN', 'DINNER', 'EXIT', 'TO', 'LOBBY']
+                def checkwin_img():
+                    chk = 0
+                    for i in win_txt:
+                        if i in img_txtinfo:
+                            chk += 1
+                    return chk
+                print (checkwin_img())
+                if checkwin_img() == 6:
+                    chicken_food = ['roasted chicken', 'fried chicken', 'chicken wings', 'chicken nuggets']
                     buildargs = {
                         'serviceName': 'customsearch',
                         'version': 'v1',
@@ -69,7 +80,8 @@ async def on_message(message):
                     print(links)
                     print(img_link)
                     type(img_link)
-                    await client.send_message(message.channel, "Congratulations on ranking first, " + message.author.mention + "! Here's your chicken dinner: ", embed = e_img)
+                    await client.send_message(message.channel, "Congratulations on ranking first, " +
+                                              message.author.mention + "! Here's your chicken dinner: ", embed = e_img)
     except Exception as e:
         print (e)
         pass
