@@ -101,8 +101,9 @@ async def on_message(message):
         p_inf = pubg_api.player(p_handle)
         print (p_inf)
         if 'error' in p_inf:
-            await client.send_message(message.channel, "Unable to retrieve stats.")
-            await client.send_message(message.channel, "Reason: "+p_inf['error'])
+            e_err = discord.Embed()
+            e_err.add_field(name="Reason:", value=p_inf['error'], inline=False)
+            await client.send_message(message.channel, "Unable to retrieve stats", embed=e_err)
         else:
             for sts in p_inf:
                 await client.send_message(message.channel, "Here are "+p_handle+"'s stats.", embed=p_inf)
