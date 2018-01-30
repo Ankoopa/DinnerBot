@@ -19,7 +19,7 @@ async def on_ready():
     await client.change_presence(game=discord.Game(name='Updating...'))
     time.sleep(2)
     print ("Dinner Bot v0.1, ready to serve!")
-    return await client.change_presence(game=discord.Game(name='Testing'))
+    return await client.change_presence(game=discord.Game(name='Testing2'))
 
 @client.event
 async def on_message(message):
@@ -82,32 +82,31 @@ async def on_message(message):
                 print(links)
                 print(img_link)
                 type(img_link)
-                await client.send_message(message.channel, "Congratulations on ranking first, " +
+                await client.send_message(message.channel, ":chicken: Congratulations on ranking first, " +
                         message.author.mention + "! Here's your chicken dinner: ", embed = e_img)
+        elif message.content.lower().startswith("~stats"):
+            p_handle = message.content[len('~stats'):].lower().strip()
+            print(p_handle)
+            if p_handle == '':
+                e_msg = discord.Embed()
+                e_msg.add_field(name="Usage of ~stats [*cmd*]:", value="*player_name*: See [*player_name*]'s stats.",
+                                inline=False)
+                await client.send_message(message.channel, embed=e_msg)
+                return
+            p_inf = pubg_api.player(p_handle)
+            print(p_inf)
+            if 'error' in p_inf:
+                e_err = discord.Embed()
+                e_err.add_field(name="Reason:", value=p_inf['error'], inline=False)
+                await client.send_message(message.channel, "ERROR: Unable to retrieve stats", embed=e_err)
+            else:
+                for sts in p_inf:
+                    await client.send_message(message.channel, "Here are " + p_handle + "'s stats.", embed=p_inf)
+                    await client.send_message(message.channel, "Powered by: ")
         return
     except Exception as e:
         print (e)
         pass
-    return
-
-@client.event
-async def on_message(message):
-    if message.content.lower().startswith("~stats"):
-        p_handle = message.content[len('~stats'):].lower().strip()
-        print(p_handle)
-        if p_handle == '':
-            await client.send_message(message.channel, "USAGE: '~stats [*your name*]'")
-            return
-        p_inf = pubg_api.player(p_handle)
-        print (p_inf)
-        if 'error' in p_inf:
-            e_err = discord.Embed()
-            e_err.add_field(name="Reason:", value=p_inf['error'], inline=False)
-            await client.send_message(message.channel, "Unable to retrieve stats", embed=e_err)
-        else:
-            for sts in p_inf:
-                await client.send_message(message.channel, "Here are "+p_handle+"'s stats.", embed=p_inf)
-                await client.send_message(message.channel, "Powered by: ")
     return
 
 client.run('NDA1NzEwNzY4OTc4NTI2MjA4.DUoXbA.YKgLUl9cqfgB5VqoAkAbCJKaRQI')
