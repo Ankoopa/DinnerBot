@@ -1,3 +1,4 @@
 discord.py[voice]
 search-google==1.2.1
-pypubg
+beautifulsoup4
+lxml
