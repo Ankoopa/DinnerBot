@@ -1,9 +1,8 @@
-import discord
 import requests
 from bs4 import BeautifulSoup
 
-try:
-    def get_data(handle):
+def get_data(handle):
+    try:
         page = requests.get("https://masterpubg.com/profile/pc/"+handle)
         soup = BeautifulSoup(page.content, 'html.parser')
         p_data = soup.find("div", {"class": "data-lifetime-stats widget widget-table"})
@@ -17,5 +16,5 @@ try:
         for i in p_vals:
             p_vals_txt.append(i.get_text(strip=True))
         return p_labels_txt, p_vals_txt
-except Exception as e:
-    print(e)
+    except Exception:
+        return Exception

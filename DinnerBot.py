@@ -5,26 +5,35 @@ from modules import stat_tracker
 import http.client, urllib.request, urllib.parse, urllib.error
 import search_google.api
 import random
-import time
+import traceback
 
-client = Bot(command_prefix="~", pm_help = False)
+client = Bot(command_prefix="w!", pm_help = False)
 
 subscription_key = '210e9b869f7249939d6c1cfc731f851d'
 uri_base = 'westcentralus.api.cognitive.microsoft.com'
 
 @client.event
 async def on_ready():
-    print ("Dinner Bot updated!")
-    await client.change_presence(game=discord.Game(name='Updating...'))
-    time.sleep(2)
-    print ("Dinner Bot v0.1, ready to serve!")
+    e_msg = discord.Embed().add_field(name="Changes:",
+                                    value='Added stat tracking from Master PUBG. Use "w!stats *handle*" to see a '
+                                          "player's stats", inline=False)
+    for server in client.servers:
+        channels = server.channels
+        ch = discord.utils.get(channels, name='general', type=discord.ChannelType.text)
+        print (ch)
+        ch_id = client.get_channel(ch)
+        print (ch_id)
+        await client.send_message(ch, "WaiterBot has been updated to v0.5!", embed=e_msg)
+    print ("Waiter Bot updated!")
+    print ("Waiter Bot v0.5, ready to serve!")
     return await client.change_presence(game=discord.Game(name='Testing2'))
 
 @client.event
 async def on_message(message):
     try:
-        if message.content.lower().startswith("~stats"):
-            await client.send_message(message.channel, embed=stat_tracker.get_stats(message.content))
+        if message.content.lower().startswith("w!stats"):
+            msg = stat_tracker.get_stats(message.content)
+            await client.send_message(message.channel, msg[1], embed=msg[0])
             return
         elif('.png') in str(message.attachments[0]) or ('.jpg') in str(message.attachments[0]):
             img = json.loads(json.dumps(message.attachments[0]))
@@ -89,6 +98,7 @@ async def on_message(message):
             return
     except Exception as e:
         print (e)
+        traceback.print_exc()
     return
 
 client.run('NDA2ODA3NzY5MjI5MDMzNTAz.DU4rFQ.Y__6zlIORmqqiKHO01CXOApPgBU')
