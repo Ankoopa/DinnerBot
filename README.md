@@ -1,7 +1,13 @@
 # DinnerBot
 
-A Discord bot for PUBG players who keep sending their Chicken Dinners. Sends a random pic of a chicken meal when it detects a PUBG Chicken Dinner pic.
+A simple PUBG bot I made for my friends in Discord.
 
-I'm completely new to programming, so I believe my code is inefficient.
+This is what the bot currently does:
+-checks a picture of a Chicken Dinner (PUBG win screen), then sends back a picture of an actual chicken dinner.
+-retrieve player stats from masterpubg.com.
 
-version: 0.1
+This small project is a result of me playing around with Python.
+
+I'm an amateur in programming, so the code here may be inefficient and unstructured.
+
+version: 0.5
