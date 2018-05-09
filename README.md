@@ -1,4 +1,6 @@
-# DinnerBot
+## DinnerBot
+
+# Note: I am no longer working on this project. The image recognition API has stopped working.
 
 A simple PUBG bot I made for my friends in Discord.
 
